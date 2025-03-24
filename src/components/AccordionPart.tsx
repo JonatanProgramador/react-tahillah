@@ -8,7 +8,7 @@ interface props {
   const AccordionPart: React.FC<props> = ({letters}) =>  {
     return (<Accordion>
         <AccordionSummary
-            expandIcon={<ExpandMore/>}>
+            expandIcon={<ExpandMore color="secondary" />}>
             <Typography fontWeight="bold" sx={{ flexGrow: 1 }} component="span">{letters.summary.toLocaleUpperCase()}</Typography>
         </AccordionSummary>
         <AccordionDetails>

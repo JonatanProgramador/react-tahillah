@@ -15,7 +15,7 @@ function TabsPage() {
 
     return(<Box >
         <TabContext value={value}>
-            <Tabs sx={{backgroundColor:"white"}} variant='scrollable' scrollButtons="auto" value={value} onChange={handleChange}>
+            <Tabs variant='scrollable' scrollButtons="auto" value={value} onChange={handleChange}>
               {letters.map((letter)=>{return (<Tab  key={letter.id} label={letter.summary} value={letter.id}/>);}) }     
             </Tabs>
           {letters.map((letter)=>{return <TabPanel sx={{fontSize:20}} key={letter.id} value={letter.id}>{letter.letter}</TabPanel>}) } 
