@@ -1,15 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ScrollPage from "../pages/scrollPage";
-import TabsPage from "../pages/tabsPage";
-import CreatePage from "../pages/createPage";
+import ROUTES from "./routes";
+
 
 export default function Router() {
-    return ( <BrowserRouter>
+
+    return (<BrowserRouter>
         <Routes>
-        <Route path='/' element={<div></div>}></Route>
-            <Route path='/scroll' element={<ScrollPage/>}></Route>
-            <Route path='/tabs' element={<TabsPage/>}></Route>
-            <Route path='/accordion' element={<CreatePage/>}></Route>
+            {ROUTES.map((route)=>{
+                return <Route key={route.id} path={route.path} element={route.element}></Route>;
+            })}
         </Routes>
-        </BrowserRouter>);
+    </BrowserRouter>);
 }

@@ -1,16 +1,12 @@
-import LettersInterface from "./interface/LettersInterface";
+import DataInterface from "./interface/DataInterface";
 
-interface DataInterface {
-    id:number,
-    title:string,
-    tone:string,
-    letters:LettersInterface[]
-}
+
 
 const DATA: DataInterface[] = [{
     id: 1,
     title: "Fue Jesús",
     tone: "Do Mayor",
+    type: "Adoración",
     letters: [
         {
             id: 1,
@@ -39,9 +35,10 @@ const DATA: DataInterface[] = [{
     ]
 },
 {
-    id: 1,
+    id: 2,
     title: "Soy un prodigo",
     tone: "Al 7 por bulerias",
+    type: "Adoración",
     letters:[
         {
             id: 1,

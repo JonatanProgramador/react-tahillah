@@ -1,28 +1,15 @@
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
+import ROUTES from "../routes/routes";
 
-const pages = [
-    {
-        id: 1,
-        name:"Ejemplo 1",
-        url:"/scroll"
-    },
-    {
-        id: 2,
-        name:"Ejemplo 2",
-        url:"/tabs"
-    },
-    {
-        id: 3,
-        name:"Ejemplo 3",
-        url:"/accordion"
-    }
-];
+
 
 export default function MenuBarSimple() {
     return(<AppBar  sx={{backgroundColor:"white", marginBottom:6}} position="static">
         <Toolbar    disableGutters> 
             <Box width={'100%'}  display={'flex'} justifyContent={'center'} >
-                {pages.map((page) => (
+                {ROUTES.map((page) => {
+                  if(page.url !== '')
+                  return (
                   <Button
                   key={page.id}
                   variant='contained'
@@ -31,7 +18,7 @@ export default function MenuBarSimple() {
                   >
                     {page.name}
                   </Button>
-                ))}
+                )})}
               </Box>
         </Toolbar>
         </AppBar>);
