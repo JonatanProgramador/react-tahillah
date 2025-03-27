@@ -17,7 +17,7 @@ function CreatePage() {
         type: Yup.string().required("Campo requerido").max(20,"Maximo 20 caracteres"),
     });
 
-    const [letters, setLetters] = useState<LettersInterface[]>([{id:1, type:"coro", summary:"asd", letter:"asdssss" }]);
+    const [letters, setLetters] = useState<LettersInterface[]>([]);
     const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     const formik = useFormik({
@@ -28,8 +28,14 @@ function CreatePage() {
         }
     });
 
-  function createLetter() {
-   setOpenDialog(true);
+  function createLetter(letter:LettersInterface) {
+    letter.id = letters.length+1;
+    const arraySummary = letter.letter.split(" ");
+    letter.summary = "";
+    for(let i=0; i<5&&i<arraySummary.length; ++i) {
+        letter.summary = letter.summary+arraySummary[i]+" ";
+    }
+    setLetters([...letters, letter]);
   }
 
 
@@ -38,7 +44,7 @@ function CreatePage() {
         <Container onSubmit={formik.handleSubmit} component={"form"} maxWidth={false}>
             <Box alignItems={'start'} display={'flex'}>
                 <Box  display={'flex'} flexDirection={'column'}>
-                    <Button onClick={createLetter} sx={{width:'fit-content', height:'fit-content'}} variant="outlined" startIcon={<AddIcon />}>Crear</Button>
+                    <Button onClick={()=>setOpenDialog(true)} sx={{width:'fit-content', height:'fit-content'}} variant="outlined" startIcon={<AddIcon />}>Crear</Button>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: 'column', alignItems:'end', flexGrow:1 }}>
                     <TextField disabled={true}  sx={{width:'200px', backgroundColor:'#2C3E50', marginBottom:1}}  color="secondary" label="Titulo" name="title"></TextField>
@@ -51,7 +57,7 @@ function CreatePage() {
                 })}
             </Box> 
             <Button  type="submit">Enviar</Button>
-            <DialogCreateLetter open={openDialog} setOpen={setOpenDialog}/>
+            <DialogCreateLetter open={openDialog} setOpen={setOpenDialog} createLetter={createLetter}/>
         </Container>
         
     );
