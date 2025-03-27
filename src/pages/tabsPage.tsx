@@ -6,12 +6,14 @@ import { useParams } from "react-router-dom";
 import DataInterface from "../interface/DataInterface";
 
 function TabsPage() {
+
     const [value, setValue] = useState(1);
     const [praise, setPraise] = useState<DataInterface>();
     const params = useParams();
+    
     useEffect(() => {
       const id = params.id?Number.parseInt(params.id):-1;
-      setPraise(DATA[id-1])
+      setPraise(DATA.find((praise)=>praise.id === id))
     }, []);
   
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -26,7 +28,7 @@ function TabsPage() {
             </Tabs>
           {praise?.letters.map((letter)=>{return <TabPanel sx={{fontSize:20}} key={letter.id} value={letter.id}>{letter.letter}</TabPanel>}) } 
         </TabContext>
-        <Box sx={{display:"flex"}}>
+        <Box display="flex" marginRight={1} marginLeft={1}>
             <Typography sx={{ flexGrow: 1 }} fontSize={20}>{DATA[1].title}</Typography>
             <Typography fontSize={20}>{DATA[1].tone}</Typography>
         </Box>
