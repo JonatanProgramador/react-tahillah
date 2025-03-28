@@ -4,8 +4,10 @@ import LettersInterface from "../interface/LettersInterface";
 
 interface props {
     letters:LettersInterface;
+    deleteLetter:(id:number) => void
+    setLetterEdit:(id:number) => void
 }
-  const AccordionPart: React.FC<props> = ({letters}) =>  {
+  const AccordionPart: React.FC<props> = ({letters, deleteLetter, setLetterEdit}) =>  {
     return (<Accordion>
         <AccordionSummary
             expandIcon={<ExpandMore color="secondary" />}>
@@ -15,8 +17,8 @@ interface props {
             <Typography fontSize={20}>{letters.letter}</Typography>
         </AccordionDetails>
         <AccordionActions>
-            <Button>Editar</Button>
-            <Button>Eliminar</Button>
+            <Button onClick={()=>setLetterEdit(letters.id)}>Editar</Button>
+            <Button onClick={()=>deleteLetter(letters.id)}>Eliminar</Button>
         </AccordionActions>
     </Accordion>);
 }

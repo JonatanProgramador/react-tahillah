@@ -4,8 +4,9 @@ import * as Yup from 'yup';
 import {  useFormik } from "formik";
 import LettersInterface from "../interface/LettersInterface";
 import AccordionPart from "../components/AccordionPart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DialogCreateLetter from "../components/DialogCreateLetter";
+import DialogEditLetter from "../components/DialogEditLetter";
 
 
 
@@ -18,7 +19,11 @@ function CreatePage() {
     });
 
     const [letters, setLetters] = useState<LettersInterface[]>([]);
-    const [openDialog, setOpenDialog] = useState<boolean>(false);
+    const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
+    const [letterModify, setLetterModify] = useState<LettersInterface>();
+
+    //useEffect(()=>{console.log(letters),[letters]});
 
     const formik = useFormik({
         validationSchema:formPraiseSchema,
@@ -38,13 +43,34 @@ function CreatePage() {
     setLetters([...letters, letter]);
   }
 
+  function deleteLetter(id:number) {
+    const newLetters = letters.filter((letter) => letter.id !== id);
+    for(let i = 0; i<newLetters.length; ++i) {
+        newLetters[i].id = i+1;
+    }
+        setLetters([...newLetters]);
+  };
+
+  function editLetter(letter:LettersInterface){
+    console.log(letter);
+  }
+
+  function setLetterEdit(id:number) {
+     const letter = letters.find((letter)=>letter.id === id);
+     
+     if(letter) {
+        setLetterModify(letter);
+        setOpenEditDialog(true);
+     }
+  }
+
 
     return (
         
         <Container onSubmit={formik.handleSubmit} component={"form"} maxWidth={false}>
             <Box alignItems={'start'} display={'flex'}>
                 <Box  display={'flex'} flexDirection={'column'}>
-                    <Button onClick={()=>setOpenDialog(true)} sx={{width:'fit-content', height:'fit-content'}} variant="outlined" startIcon={<AddIcon />}>Crear</Button>
+                    <Button onClick={()=>setOpenCreateDialog(true)} sx={{width:'fit-content', height:'fit-content'}} variant="outlined" startIcon={<AddIcon />}>Crear</Button>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: 'column', alignItems:'end', flexGrow:1 }}>
                     <TextField disabled={true}  sx={{width:'200px', backgroundColor:'#2C3E50', marginBottom:1}}  color="secondary" label="Titulo" name="title"></TextField>
@@ -53,11 +79,12 @@ function CreatePage() {
             </Box>
              <Box marginTop={5}>
                 {letters.map((letter) => {
-                    return (<AccordionPart key={letter.id} letters={letter} />);
+                    return (<AccordionPart setLetterEdit={setLetterEdit} key={letter.id} letters={letter} deleteLetter={deleteLetter} />);
                 })}
             </Box> 
             <Button  type="submit">Enviar</Button>
-            <DialogCreateLetter open={openDialog} setOpen={setOpenDialog} createLetter={createLetter}/>
+            <DialogCreateLetter open={openCreateDialog} setOpen={setOpenCreateDialog} createLetter={createLetter}/>
+            <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LettersInterface}/>
         </Container>
         
     );
