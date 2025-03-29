@@ -28,7 +28,7 @@ const ROUTES = [
     {
         id: 4,
         name: "Crear",
-        url: "/createPraise",
+        url: "",
         path: "/createPraise",
         element: <CreatePage/>
     },

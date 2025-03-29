@@ -7,10 +7,19 @@ import AccordionPart from "../components/AccordionPart";
 import { useEffect, useState } from "react";
 import DialogCreateLetter from "../components/DialogCreateLetter";
 import DialogEditLetter from "../components/DialogEditLetter";
+import LettersModel from "../models/lettersModel";
+import DataInterface from "../interface/DataInterface";
 
 
 
 function CreatePage() {
+
+    const [letters, setLetters] = useState<LettersInterface[]>([]);
+    const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
+    const [letterModify, setLetterModify] = useState<LettersInterface>();
+
+    const letterModel = new LettersModel();
 
     const formPraiseSchema = Yup.object({
         title: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
@@ -18,48 +27,29 @@ function CreatePage() {
         type: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
     });
 
-    const [letters, setLetters] = useState<LettersInterface[]>([]);
-    const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
-    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
-    const [letterModify, setLetterModify] = useState<LettersInterface>();
-
-    //useEffect(()=>{console.log(letters),[letters]});
-
     const formik = useFormik({
         validationSchema: formPraiseSchema,
         initialValues: { title: "", tone: "", type: "" },
         onSubmit: values => {
-            console.log(values);
+            const praise:DataInterface = {...values, letters:letters} as DataInterface;
+            console.log(praise);
         }
     });
 
     function createLetter(letter: LettersInterface) {
-        letter.id = letters.length + 1;
-        const arraySummary = letter.letter.split(" ");
-        letter.summary = "";
-        for (let i = 0; i < 5 && i < arraySummary.length; ++i) {
-            letter.summary = letter.summary + arraySummary[i] + " ";
-        }
-        setLetters([...letters, letter]);
-    }
+        letterModel.createLetter(letter);
+        setLetters([...letterModel.getLetters()]);
+    };
 
     function deleteLetter(id: number) {
-        const newLetters = letters.filter((letter) => letter.id !== id);
-        for (let i = 0; i < newLetters.length; ++i) {
-            newLetters[i].id = i + 1;
-        }
-        setLetters([...newLetters]);
+        letterModel.deleteLetter(id);
+        setLetters([...letterModel.getLetters()]);
     };
 
     function editLetter(letter: LettersInterface) {
-        letter.summary = "";
-        const arraySummary = letter.letter.split(" ");
-        for (let i = 0; i < 5 && i < arraySummary.length; ++i) {
-            letter.summary = letter.summary + arraySummary[i] + " ";
-        }
-        const newLetters = letters.map((le) => le.id === letter.id ? letter : le);
-        setLetters([...newLetters]);
-    }
+        letterModel.editLetter(letter);
+        setLetters([...letterModel.getLetters()]);
+    };
 
     function setLetterEdit(id: number) {
         const letter = letters.find((letter) => letter.id === id);
@@ -94,7 +84,7 @@ function CreatePage() {
                     return (<AccordionPart setLetterEdit={setLetterEdit} key={letter.id} letters={letter} deleteLetter={deleteLetter} />);
                 })}
             </Box>
-            <Button type="submit">Enviar</Button>
+            <Button variant="outlined" type="submit">Enviar</Button>
             <DialogCreateLetter open={openCreateDialog} setOpen={setOpenCreateDialog} createLetter={createLetter} />
             <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LettersInterface} />
         </Container>
