@@ -2,6 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextFie
 import LettersInterface from "../interface/LettersInterface";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
+import { useEffect } from "react";
 
 interface props {
     open: boolean,
@@ -16,6 +17,7 @@ const formLetterSchema = Yup.object({
     letter: Yup.string().required("Requerido")
 });
 
+useEffect(()=>{formik.setValues({letter:letter?.letter,type:letter?.type})},[letter])
 
 const formik =  useFormik({
     validationSchema: formLetterSchema,
@@ -39,7 +41,7 @@ const formik =  useFormik({
             </DialogContent>
             <DialogActions>
                 <Button onClick={()=>setOpen(false)}>Cancelar</Button>
-                <Button type="submit" >Crear</Button>
+                <Button type="submit" >Editar</Button>
             </DialogActions>
             </Box>
         </Dialog>

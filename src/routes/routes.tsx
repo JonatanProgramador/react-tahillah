@@ -13,7 +13,7 @@ const ROUTES = [
     },
     {
         id: 2,
-        name: "Lista Alabanzas",
+        name: "Lista",
         url: "/praise",
         path: "/praise",
         element: <ListPraise/>
@@ -27,7 +27,7 @@ const ROUTES = [
     },
     {
         id: 4,
-        name: "Crear alabanza",
+        name: "Crear",
         url: "/createPraise",
         path: "/createPraise",
         element: <CreatePage/>
