@@ -1,21 +1,30 @@
 import DataInterface from "../interface/DataInterface";
-import PraiseService from "../services/localstorage/PraiseService";
+import PraiseService from "../services/apirest/PraiseService";
 
 class PraiseModel {
-    private praises: DataInterface[];
 
-    constructor() {
-        PraiseService.setPraises();
-        this.praises = PraiseService.getAllPraises();
+
+    static async getPraises() {
+        return await PraiseService.getAllPraises() as DataInterface[];
     }
 
-    getPraises() {
-        return this.praises;
+    static async getPraise(id: number) {
+        return await PraiseService.getById(id) as DataInterface;
     }
 
-    setPraise(praise:DataInterface) {
-        this.praises.push(praise);
+    static async createPraise(praise: DataInterface) {
+         await PraiseService.createPraise(JSON.stringify(praise));
     }
+
+    static async updatePraise(praise: DataInterface) {
+        await PraiseService.updatePraise(JSON.stringify(praise));
+    }
+
+    static async deletePraise(id: number) {
+        await PraiseService.deletePraise(id);
+    }
+
+
 }
 
 export default PraiseModel;

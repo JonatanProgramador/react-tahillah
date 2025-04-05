@@ -1,5 +1,6 @@
 
 import CreatePage from "../pages/createPage";
+import EditPage from "../pages/editPage";
 import ListPraise from "../pages/ListPraise";
 import TabsPage from "../pages/tabsPage";
 
@@ -31,6 +32,13 @@ const ROUTES = [
         url: "",
         path: "/createPraise",
         element: <CreatePage/>
+    },
+    {
+        id: 4,
+        name: "Editar",
+        url: "",
+        path: "/editPraise/:id",
+        element: <EditPage/>
     },
 ];
 
