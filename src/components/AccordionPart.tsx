@@ -1,9 +1,9 @@
 import { ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Button, Typography } from "@mui/material";
-import LettersInterface from "../interface/LettersInterface";
+import LetterInterface from "../interface/LetterInterface";
 
 interface props {
-    letters:LettersInterface;
+    letters:LetterInterface;
     deleteLetter:(id:number) => void
     setLetterEdit:(id:number) => void
 }

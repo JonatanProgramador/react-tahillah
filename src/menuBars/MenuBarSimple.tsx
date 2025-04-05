@@ -8,7 +8,7 @@ export default function MenuBarSimple() {
         <Toolbar   disableGutters> 
             <Box width={'100%'}  display={'flex'} justifyContent={'center'} >
                 {ROUTES.map((page) => {
-                  if(page.url !== '')
+                  if(page.menuBar)
                   return (
                   <Button
                   key={page.id}

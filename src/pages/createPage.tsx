@@ -1,23 +1,24 @@
 import { Box, Button, Container, Divider, Grid2, TextField } from "@mui/material";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
-import LettersInterface from "../interface/LettersInterface";
+import LetterInterface from "../interface/LetterInterface";
 import AccordionPart from "../components/AccordionPart";
 import { useContext, useState } from "react";
 import DialogCreateLetter from "../components/DialogCreateLetter";
 import DialogEditLetter from "../components/DialogEditLetter";
 import LettersModel from "../models/lettersModel";
-import DataInterface from "../interface/DataInterface";
+import PraiseInterface from "../interface/PraiseInterface";
 import PraiseModel from "../models/praiseModel";
 
 
 
 function CreatePage() {
 
-    const [letters, setLetters] = useState<LettersInterface[]>([]);
+    const [letters, setLetters] = useState<LetterInterface[]>([]);
     const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
     const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
-    const [letterModify, setLetterModify] = useState<LettersInterface>();
+    const [letterModify, setLetterModify] = useState<LetterInterface>();
+    const [sendData, setSendData] = useState(false);
 
     const letterModel = new LettersModel();
 
@@ -31,12 +32,18 @@ function CreatePage() {
         validationSchema: formPraiseSchema,
         initialValues: { title: "", tone: "", type: "" },
         onSubmit: values => {
-            const praise:DataInterface = {...values, letters:letters} as DataInterface;
-            PraiseModel.setPraise(praise);
+            if (letters.length > 0) {
+                (async () => {
+                    setSendData(true);
+                    const praise: PraiseInterface = { ...values, letters: letters } as PraiseInterface;
+                    await PraiseModel.createPraise(praise);
+                    setSendData(false);
+                })()
+            }
         }
     });
 
-    function createLetter(letter: LettersInterface) {
+    function createLetter(letter: LetterInterface) {
         letterModel.createLetter(letter);
         setLetters([...letterModel.getLetters()]);
     };
@@ -46,7 +53,7 @@ function CreatePage() {
         setLetters([...letterModel.getLetters()]);
     };
 
-    function editLetter(letter: LettersInterface) {
+    function editLetter(letter: LetterInterface) {
         letterModel.editLetter(letter);
         setLetters([...letterModel.getLetters()]);
     };
@@ -66,16 +73,16 @@ function CreatePage() {
         <Container sx={{ padding: 1 }} onSubmit={formik.handleSubmit} component={"form"} maxWidth={false}>
             <Grid2 spacing={1} container>
                 <Grid2 size={6}>
-                    <TextField onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Tipo" name="type" id="type"></TextField>
+                    <TextField disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Tipo" name="type" id="type"></TextField>
                 </Grid2>
                 <Grid2 display={"flex"} justifyContent={"end"} size={6} >
-                    <TextField onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Titulo" name="title" id="title"></TextField>
+                    <TextField disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Titulo" name="title" id="title"></TextField>
                 </Grid2>
                 <Grid2 display={"flex"} flexDirection={"column"} justifyContent={"end"} size={6}>
-                    <Button onClick={() => setOpenCreateDialog(true)} sx={{ width: 'fit-content', height: 'fit-content' }} variant="outlined">Crear Letra</Button>
+                    <Button disabled={sendData} onClick={() => setOpenCreateDialog(true)} sx={{ width: 'fit-content', height: 'fit-content' }} variant="outlined">Crear Letra</Button>
                 </Grid2>
                 <Grid2 size={6} display={"flex"} justifyContent={"end"} >
-                    <TextField onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" value={formik.values.tone} label="Tono" id="tone" name="tone"></TextField>
+                    <TextField disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" value={formik.values.tone} label="Tono" id="tone" name="tone"></TextField>
                 </Grid2>
             </Grid2>
             <Box marginTop={5}>
@@ -84,9 +91,11 @@ function CreatePage() {
                     return (<AccordionPart setLetterEdit={setLetterEdit} key={letter.id} letters={letter} deleteLetter={deleteLetter} />);
                 })}
             </Box>
-            <Button variant="outlined" type="submit">Enviar</Button>
+            <Box margin={1}>
+                <Button disabled={sendData} variant="outlined" type="submit">Crear</Button>
+            </Box>
             <DialogCreateLetter open={openCreateDialog} setOpen={setOpenCreateDialog} createLetter={createLetter} />
-            <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LettersInterface} />
+            <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LetterInterface} />
         </Container>
 
     );

@@ -1,18 +1,18 @@
-import DataInterface from "../../interface/DataInterface";
+import PraiseInterface from "../../interface/PraiseInterface";
 
 class PraiseService {
 
 
-    static setPraise(praise?: DataInterface): void {
+    static setPraise(praise?: PraiseInterface): void {
         const jsonPraises = localStorage.getItem('praises');
         if (praise) {
-            let praises = jsonPraises ? JSON.parse(jsonPraises) : [] as Array<DataInterface>;
-            const exitPraise = praises.find((pra: DataInterface) => pra.id === praise.id) ? true : false;
+            let praises = jsonPraises ? JSON.parse(jsonPraises) : [] as Array<PraiseInterface>;
+            const exitPraise = praises.find((pra: PraiseInterface) => pra.id === praise.id) ? true : false;
             
             if (!exitPraise) {
                 praises.push(praise);
             } else {
-                praises = praises.map((pra:DataInterface) => pra.id === praise.id ? praise : pra);
+                praises = praises.map((pra:PraiseInterface) => pra.id === praise.id ? praise : pra);
                 console.log(praise);
             }
             localStorage.setItem('praises', JSON.stringify(praises));
@@ -22,15 +22,15 @@ class PraiseService {
     static getAllPraises() {
         const jsonPraises = localStorage.getItem('praises');
         if (jsonPraises) {
-            return JSON.parse(jsonPraises) as Array<DataInterface>;
+            return JSON.parse(jsonPraises) as Array<PraiseInterface>;
         }
         return [];
     }
 
     static deletePraise(id:number) {
         const jsonPraises = localStorage.getItem('praises');
-        let praises = jsonPraises ? JSON.parse(jsonPraises) : [] as Array<DataInterface>;
-        praises = praises.filter((pra:DataInterface) => pra.id !== id );
+        let praises = jsonPraises ? JSON.parse(jsonPraises) : [] as Array<PraiseInterface>;
+        praises = praises.filter((pra:PraiseInterface) => pra.id !== id );
         localStorage.setItem('praises', JSON.stringify(praises));
     }
 }

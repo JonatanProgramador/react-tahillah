@@ -10,6 +10,7 @@ const ROUTES = [
         name: "Home",
         url: "/",
         path: "/",
+        menuBar:true,
         element: <div></div>
     },
     {
@@ -17,12 +18,14 @@ const ROUTES = [
         name: "Lista",
         url: "/praise",
         path: "/praise",
+        menuBar:true,
         element: <ListPraise/>
     },
     {
         id: 3,
         name: "Ver alabanza",
         url: "",
+        menuBar:false,
         path: "/showPraise/:id",
         element: <TabsPage/>
     },
@@ -30,6 +33,7 @@ const ROUTES = [
         id: 4,
         name: "Crear",
         url: "",
+        menuBar:false,
         path: "/createPraise",
         element: <CreatePage/>
     },
@@ -37,6 +41,7 @@ const ROUTES = [
         id: 4,
         name: "Editar",
         url: "",
+        menuBar:false,
         path: "/editPraise/:id",
         element: <EditPage/>
     },

@@ -1,8 +1,8 @@
-interface LettersInterface {
+interface LetterInterface {
     id:number,
     type:string,
     summary:string,
     letter:string
 };
 
-export default LettersInterface;
+export default LetterInterface;

@@ -1,13 +1,13 @@
 import { Box, Button, Container, Divider, Grid2, TextField } from "@mui/material";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
-import LettersInterface from "../interface/LettersInterface";
+import LetterInterface from "../interface/LetterInterface";
 import AccordionPart from "../components/AccordionPart";
 import { useEffect, useState } from "react";
 import DialogCreateLetter from "../components/DialogCreateLetter";
 import DialogEditLetter from "../components/DialogEditLetter";
 import LettersModel from "../models/lettersModel";
-import DataInterface from "../interface/DataInterface";
+import PraiseInterface from "../interface/PraiseInterface";
 import PraiseModel from "../models/praiseModel";
 import { useParams } from "react-router-dom";
 
@@ -15,15 +15,30 @@ import { useParams } from "react-router-dom";
 
 function EditPage() {
 
+    const formPraiseSchema = Yup.object({
+        title: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
+        tone: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
+        type: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
+    });
+
     const letterModel = new LettersModel();
     const params = useParams();
-    let formik;
+    let formik = useFormik({
+        validationSchema: formPraiseSchema,
+        initialValues: { title: "", tone: "", type: "" },
+        onSubmit: values => {
+            
+            if (letters.length > 0 && praise) {
+                PraiseModel.updatePraise({...praise, ...values, letters:letters})
+            }
+        }
+    });
 
-    const [praise, setPraise] = useState<DataInterface>();
-    const [letters, setLetters] = useState<LettersInterface[]>([]);
+    const [praise, setPraise] = useState<PraiseInterface>();
+    const [letters, setLetters] = useState<LetterInterface[]>([]);
     const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
     const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
-    const [letterModify, setLetterModify] = useState<LettersInterface>();
+    const [letterModify, setLetterModify] = useState<LetterInterface>();
 
     useEffect(()=>{
         (async()=>{
@@ -35,27 +50,18 @@ function EditPage() {
 
     useEffect(()=>{
       console.log(praise);
+      formik.values.title = praise?.title??"";
+      formik.values.tone = praise?.tone??"";
+      formik.values.type = praise?.type??"";
     },[praise])
 
 
 
-    const formPraiseSchema = Yup.object({
-        title: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
-        tone: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
-        type: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
-    });
+    
 
-     formik = useFormik({
-        validationSchema: formPraiseSchema,
-        initialValues: { title: praise?.title, tone: praise?.tone, type: praise?.type },
-        onSubmit: values => {
-            if (letters.length > 0) {
-                console.log(values);
-            }
-        }
-    });
+     
 
-    function createLetter(letter: LettersInterface) {
+    function createLetter(letter: LetterInterface) {
         letterModel.createLetter(letter);
         setLetters([...letterModel.getLetters()]);
     };
@@ -65,7 +71,7 @@ function EditPage() {
         setLetters([...letterModel.getLetters()]);
     };
 
-    function editLetter(letter: LettersInterface) {
+    function editLetter(letter: LetterInterface) {
         letterModel.editLetter(letter);
         setLetters([...letterModel.getLetters()]);
     };
@@ -106,7 +112,7 @@ praise?<Container sx={{ padding: 1 }} onSubmit={formik.handleSubmit} component={
                 <Button variant="outlined" type="submit">Editar</Button>
             </Box>
             <DialogCreateLetter open={openCreateDialog} setOpen={setOpenCreateDialog} createLetter={createLetter} />
-            <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LettersInterface} />
+            <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LetterInterface} />
         </Container>:null
 
     );

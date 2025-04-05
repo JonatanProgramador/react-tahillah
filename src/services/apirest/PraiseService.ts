@@ -1,7 +1,7 @@
 
 class PraiseService {
 
-    static readonly url = "http://192.168.1.99:3000/praise/";
+    static readonly url = "http://localhost:3000/praise/";
 
     static async getAllPraises() {
     
@@ -25,8 +25,8 @@ class PraiseService {
          console.log(response);
     }
 
-    static async updatePraise(input:string) {
-        const response = await fetch(this.url,{
+    static async updatePraise(input:string, id:number) {
+        const response = await fetch(this.url+id,{
             method:"PATCH",
             body:input,
             headers:{"Content-Type":"application/json"}

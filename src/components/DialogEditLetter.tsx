@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import LettersInterface from "../interface/LettersInterface";
+import LetterInterface from "../interface/LetterInterface";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -7,8 +7,8 @@ import { useEffect } from "react";
 interface props {
     open: boolean,
     setOpen: (value: boolean) => void,
-    editLetter: (letter:LettersInterface) => void,
-    letter: LettersInterface
+    editLetter: (letter:LetterInterface) => void,
+    letter: LetterInterface
 }
 
 const DialogEditLetter: React.FC<props> = ({ open, setOpen, editLetter, letter }) => {
@@ -23,9 +23,9 @@ const formik =  useFormik({
     validationSchema: formLetterSchema,
     initialValues: { type:letter?.type, letter:letter?.letter},
     onSubmit: value => {
-        const newLetter = value as LettersInterface;
+        const newLetter = value as LetterInterface;
         newLetter.id=letter.id;
-        editLetter(newLetter as LettersInterface);
+        editLetter(newLetter as LetterInterface);
         formik.resetForm();
         setOpen(false);
     }

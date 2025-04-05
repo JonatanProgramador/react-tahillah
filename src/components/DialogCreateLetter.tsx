@@ -1,12 +1,12 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import LettersInterface from "../interface/LettersInterface";
+import LetterInterface from "../interface/LetterInterface";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 
 interface props {
     open: boolean,
     setOpen: (value: boolean) => void,
-    createLetter: (letter:LettersInterface) => void
+    createLetter: (letter:LetterInterface) => void
 }
 
 const DialogCreateLetter: React.FC<props> = ({ open, setOpen, createLetter }) => {
@@ -18,7 +18,7 @@ const formik =  useFormik({
     validationSchema: formLetterSchema,
     initialValues: {type:"", letter:""},
     onSubmit: value => {
-        createLetter({id:-1, type:value.type, letter:value.letter} as LettersInterface);
+        createLetter({id:-1, type:value.type, letter:value.letter} as LetterInterface);
         formik.resetForm();
         setOpen(false);
     }

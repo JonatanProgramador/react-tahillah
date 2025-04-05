@@ -1,8 +1,8 @@
-import LettersInterface from "../interface/LettersInterface";
+import LetterInterface from "../interface/LetterInterface";
 
 class LettersModel {
 
-    private letters: LettersInterface[];
+    private letters: LetterInterface[];
     
 
     constructor() {
@@ -11,7 +11,7 @@ class LettersModel {
 
     getLetters() { return this.letters }
 
-    createLetter(letter: LettersInterface) {
+    createLetter(letter: LetterInterface) {
         letter.id = this.letters.length + 1;
         const arraySummary = letter.letter.split(" ");
         letter.summary = "";
@@ -29,7 +29,7 @@ class LettersModel {
         this.letters = newLetters;
     }
 
-     editLetter(letter: LettersInterface) {
+     editLetter(letter: LetterInterface) {
         letter.summary = "";
         const arraySummary = letter.letter.split(" ");
         for (let i = 0; i < 5 && i < arraySummary.length; ++i) {

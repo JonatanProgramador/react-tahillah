@@ -2,13 +2,13 @@ import React, {  useEffect, useState } from "react";
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { TabContext, TabPanel } from "@mui/lab";
 import { useParams } from "react-router-dom";
-import DataInterface from "../interface/DataInterface";
+import PraiseInterface from "../interface/PraiseInterface";
 import PraiseModel from "../models/praiseModel";
 
 function TabsPage() {
 
     const [value, setValue] = useState(1);
-    const [praise, setPraise] = useState<DataInterface>();
+    const [praise, setPraise] = useState<PraiseInterface>();
     const params = useParams();
     const id = params.id?Number.parseInt(params.id):-1;
     
@@ -38,8 +38,6 @@ function TabsPage() {
     }
 
     function touchEnd() {
-      console.log("Empezado ", position.start);
-      console.log("Terminado ", position.end);
       const trige = 50
       if((position.end.x-position.start.x) > trige) {
         if(praise){

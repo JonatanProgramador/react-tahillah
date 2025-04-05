@@ -1,8 +1,8 @@
-import DataInterface from "./interface/DataInterface";
+import PraiseInterface from "./interface/PraiseInterface";
 
 
 
-const DATA: DataInterface[] = [{
+const DATA: PraiseInterface[] = [{
     id: 1,
     title: "Fue Jesús",
     tone: "Do Mayor",
