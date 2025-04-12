@@ -3,7 +3,7 @@ import PraiseInterface from "./interface/PraiseInterface";
 
 
 const DATA: PraiseInterface[] = [{
-    id: 1,
+    _id: 1,
     title: "Fue Jesús",
     tone: "Do Mayor",
     type: "Adoración",
@@ -35,7 +35,7 @@ const DATA: PraiseInterface[] = [{
     ]
 },
 {
-    id: 2,
+    _id: 2,
     title: "Soy un prodigo",
     tone: "Al 7 por bulerias",
     type: "Adoración",

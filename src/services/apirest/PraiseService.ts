@@ -10,7 +10,7 @@ class PraiseService {
         return praises;
     }
 
-    static async getById(id:number) {
+    static async getById(id:string) {
         const response = await fetch(this.url+id);
         const praise = await response.json();
         return praise;
@@ -25,7 +25,7 @@ class PraiseService {
          console.log(response);
     }
 
-    static async updatePraise(input:string, id:number) {
+    static async updatePraise(input:string, id:string) {
         const response = await fetch(this.url+id,{
             method:"PATCH",
             body:input,
@@ -34,7 +34,7 @@ class PraiseService {
          console.log(response);
     }
 
-    static async deletePraise(id:number) {
+    static async deletePraise(id:string) {
         const response = await fetch(this.url+id,{method:"DELETE"});
          console.log(response);
     }

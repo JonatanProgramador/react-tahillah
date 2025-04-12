@@ -1,7 +1,7 @@
 import LetterInterface from "./LetterInterface";
 
 interface PraiseInterface {
-    id:number,
+    _id:string,
     title:string,
     tone:string,
     type:string,

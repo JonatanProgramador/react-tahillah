@@ -2,41 +2,35 @@ import LetterInterface from "../interface/LetterInterface";
 
 class LettersModel {
 
-    private letters: LetterInterface[];
-    
-
-    constructor() {
-        this.letters = [];
-    }
-
-    getLetters() { return this.letters }
-
-    createLetter(letter: LetterInterface) {
-        letter.id = this.letters.length + 1;
+    static createLetter(letter:LetterInterface, letters:LetterInterface[]) {
+        letter.id = letters.length + 1;
         const arraySummary = letter.letter.split(" ");
         letter.summary = "";
         for (let i = 0; i < 5 && i < arraySummary.length; ++i) {
             letter.summary = letter.summary + arraySummary[i] + " ";
         }
-        this.letters.push(letter);
+        letters.push(letter);
+        return letters;
     }
 
-    deleteLetter(id: number) {
-        const newLetters = this.letters.filter((letter) => letter.id !== id);
+    static deleteLetter(id: number, letters:LetterInterface[]) {
+        const newLetters = letters.filter((letter) => letter.id !== id);
         for (let i = 0; i < newLetters.length; ++i) {
             newLetters[i].id = i + 1;
         }
-        this.letters = newLetters;
+        letters = newLetters;
+        return letters
     }
 
-     editLetter(letter: LetterInterface) {
+    static editLetter(letter: LetterInterface, letters:LetterInterface[]) {
         letter.summary = "";
         const arraySummary = letter.letter.split(" ");
         for (let i = 0; i < 5 && i < arraySummary.length; ++i) {
             letter.summary = letter.summary + arraySummary[i] + " ";
         }
-        const newLetters = this.letters.map((le) => le.id === letter.id ? letter : le);
-        this.letters = newLetters;
+        const newLetters = letters.map((le) => le.id === letter.id ? letter : le);
+        letters = newLetters;
+        return letters;
     }
 }
 

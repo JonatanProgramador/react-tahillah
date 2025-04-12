@@ -7,12 +7,12 @@ class PraiseService {
         const jsonPraises = localStorage.getItem('praises');
         if (praise) {
             let praises = jsonPraises ? JSON.parse(jsonPraises) : [] as Array<PraiseInterface>;
-            const exitPraise = praises.find((pra: PraiseInterface) => pra.id === praise.id) ? true : false;
+            const exitPraise = praises.find((pra: PraiseInterface) => pra._id === praise._id) ? true : false;
             
             if (!exitPraise) {
                 praises.push(praise);
             } else {
-                praises = praises.map((pra:PraiseInterface) => pra.id === praise.id ? praise : pra);
+                praises = praises.map((pra:PraiseInterface) => pra._id === praise._id ? praise : pra);
                 console.log(praise);
             }
             localStorage.setItem('praises', JSON.stringify(praises));
@@ -30,7 +30,7 @@ class PraiseService {
     static deletePraise(id:number) {
         const jsonPraises = localStorage.getItem('praises');
         let praises = jsonPraises ? JSON.parse(jsonPraises) : [] as Array<PraiseInterface>;
-        praises = praises.filter((pra:PraiseInterface) => pra.id !== id );
+        praises = praises.filter((pra:PraiseInterface) => pra._id !== id );
         localStorage.setItem('praises', JSON.stringify(praises));
     }
 }

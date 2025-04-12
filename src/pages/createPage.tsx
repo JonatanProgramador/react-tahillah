@@ -3,14 +3,12 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import LetterInterface from "../interface/LetterInterface";
 import AccordionPart from "../components/AccordionPart";
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import DialogCreateLetter from "../components/DialogCreateLetter";
 import DialogEditLetter from "../components/DialogEditLetter";
 import LettersModel from "../models/lettersModel";
 import PraiseInterface from "../interface/PraiseInterface";
 import PraiseModel from "../models/praiseModel";
-
-
 
 function CreatePage() {
 
@@ -19,8 +17,6 @@ function CreatePage() {
     const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
     const [letterModify, setLetterModify] = useState<LetterInterface>();
     const [sendData, setSendData] = useState(false);
-
-    const letterModel = new LettersModel();
 
     const formPraiseSchema = Yup.object({
         title: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
@@ -44,18 +40,15 @@ function CreatePage() {
     });
 
     function createLetter(letter: LetterInterface) {
-        letterModel.createLetter(letter);
-        setLetters([...letterModel.getLetters()]);
+        setLetters([...LettersModel.createLetter(letter, letters)]);
     };
 
     function deleteLetter(id: number) {
-        letterModel.deleteLetter(id);
-        setLetters([...letterModel.getLetters()]);
+        setLetters([...LettersModel.deleteLetter(id, letters)]);
     };
 
     function editLetter(letter: LetterInterface) {
-        letterModel.editLetter(letter);
-        setLetters([...letterModel.getLetters()]);
+        setLetters([...LettersModel.editLetter(letter, letters)]);
     };
 
     function setLetterEdit(id: number) {

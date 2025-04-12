@@ -21,7 +21,6 @@ function EditPage() {
         type: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
     });
 
-    const letterModel = new LettersModel();
     const params = useParams();
     let formik = useFormik({
         validationSchema: formPraiseSchema,
@@ -42,7 +41,7 @@ function EditPage() {
 
     useEffect(()=>{
         (async()=>{
-            const praises =  await PraiseModel.getPraise(params.id?Number.parseInt(params.id):-1);
+            const praises =  await PraiseModel.getPraise(params.id?params.id:"");
             setPraise(praises);
             setLetters(praises.letters);
         })()
@@ -56,24 +55,16 @@ function EditPage() {
     },[praise])
 
 
-
-    
-
-     
-
     function createLetter(letter: LetterInterface) {
-        letterModel.createLetter(letter);
-        setLetters([...letterModel.getLetters()]);
+        setLetters([...LettersModel.createLetter(letter, letters)]);
     };
 
     function deleteLetter(id: number) {
-        letterModel.deleteLetter(id);
-        setLetters([...letterModel.getLetters()]);
+        setLetters([...LettersModel.deleteLetter(id, letters)]);
     };
 
     function editLetter(letter: LetterInterface) {
-        letterModel.editLetter(letter);
-        setLetters([...letterModel.getLetters()]);
+        setLetters([...LettersModel.editLetter(letter, letters)]);
     };
 
     function setLetterEdit(id: number) {

@@ -10,7 +10,7 @@ function TabsPage() {
     const [value, setValue] = useState(1);
     const [praise, setPraise] = useState<PraiseInterface>();
     const params = useParams();
-    const id = params.id?Number.parseInt(params.id):-1;
+    const id = params.id?params.id:"";
     
     useEffect(() => {
       (async()=>{
