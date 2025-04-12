@@ -20,6 +20,8 @@ export default function ListPraise() {
         console.log(praises);
     },[praises]);
 
+   
+
     return (<Box  display={'flex'} flexDirection={"column"} alignItems={'center'} >
         <Box marginBottom={1}  display={'flex'}>
             <Button href="/createPraise" variant="contained">Crear</Button>

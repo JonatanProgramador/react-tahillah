@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Grid2, TextField } from "@mui/material";
+import { AlertColor, Box, Button, Container, Divider, Grid2, TextField } from "@mui/material";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import LetterInterface from "../interface/LetterInterface";
@@ -9,11 +9,24 @@ import DialogEditLetter from "../components/DialogEditLetter";
 import LettersModel from "../models/lettersModel";
 import PraiseInterface from "../interface/PraiseInterface";
 import PraiseModel from "../models/praiseModel";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import CustomAlert from "../components/CustomAlert";
 
 
 
 function EditPage() {
+
+
+
+    const [praise, setPraise] = useState<PraiseInterface>();
+    const [letters, setLetters] = useState<LetterInterface[]>([]);
+    const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
+    const [letterModify, setLetterModify] = useState<LetterInterface>();
+    const [sendData, setSendData] = useState(false);
+    const [alert, setAlert] = useState({ type: "", message: "", show: false });
+
+    const navigate = useNavigate();
 
     const formPraiseSchema = Yup.object({
         title: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
@@ -26,33 +39,34 @@ function EditPage() {
         validationSchema: formPraiseSchema,
         initialValues: { title: "", tone: "", type: "" },
         onSubmit: values => {
-            
-            if (letters.length > 0 && praise) {
-                PraiseModel.updatePraise({...praise, ...values, letters:letters})
-            }
+            (async () => {
+                if (letters.length > 0 && praise) {
+                    setSendData(true);
+                    const response = await PraiseModel.updatePraise({ ...praise, ...values, letters: letters });
+                    setAlert({type:response?"success":"error", message:response?"Se ha actualizado la alabanza":"Error al actualizar la alabanza", show:true});
+                    setTimeout(()=>{
+                        setAlert({...alert, show:false});
+                        navigate("/praise");
+                    },3000);
+                    setSendData(false);
+                }
+            })()
         }
     });
 
-    const [praise, setPraise] = useState<PraiseInterface>();
-    const [letters, setLetters] = useState<LetterInterface[]>([]);
-    const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
-    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
-    const [letterModify, setLetterModify] = useState<LetterInterface>();
-
-    useEffect(()=>{
-        (async()=>{
-            const praises =  await PraiseModel.getPraise(params.id?params.id:"");
+    useEffect(() => {
+        (async () => {
+            const praises = await PraiseModel.getPraise(params.id ? params.id : "");
             setPraise(praises);
             setLetters(praises.letters);
         })()
-    },[])
+    }, [])
 
-    useEffect(()=>{
-      console.log(praise);
-      formik.values.title = praise?.title??"";
-      formik.values.tone = praise?.tone??"";
-      formik.values.type = praise?.type??"";
-    },[praise])
+    useEffect(() => {
+        formik.values.title = praise?.title ?? "";
+        formik.values.tone = praise?.tone ?? "";
+        formik.values.type = praise?.type ?? "";
+    }, [praise])
 
 
     function createLetter(letter: LetterInterface) {
@@ -78,19 +92,20 @@ function EditPage() {
 
 
     return (
-praise?<Container sx={{ padding: 1 }} onSubmit={formik.handleSubmit} component={"form"} maxWidth={false}>
+        praise ? <Container sx={{ padding: 1 }} onSubmit={formik.handleSubmit} component={"form"} maxWidth={false}>
+            {alert.show?<CustomAlert message={alert.message} type={alert.type as AlertColor}/>:null}
             <Grid2 spacing={1} container>
                 <Grid2 size={6}>
-                    <TextField defaultValue={praise.type} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Tipo" name="type" id="type"></TextField>
+                    <TextField defaultValue={praise.type} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Tipo" name="type" id="type"></TextField>
                 </Grid2>
                 <Grid2 display={"flex"} justifyContent={"end"} size={6} >
-                    <TextField defaultValue={praise.title} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Titulo" name="title" id="title"></TextField>
+                    <TextField defaultValue={praise.title} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Titulo" name="title" id="title"></TextField>
                 </Grid2>
                 <Grid2 display={"flex"} flexDirection={"column"} justifyContent={"end"} size={6}>
-                    <Button onClick={() => setOpenCreateDialog(true)} sx={{ width: 'fit-content', height: 'fit-content' }} variant="outlined">Crear Letra</Button>
+                    <Button disabled={sendData} onClick={() => setOpenCreateDialog(true)} sx={{ width: 'fit-content', height: 'fit-content' }} variant="outlined">Crear Letra</Button>
                 </Grid2>
                 <Grid2 size={6} display={"flex"} justifyContent={"end"} >
-                    <TextField defaultValue={praise.tone} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary"  label="Tono" id="tone" name="tone"></TextField>
+                    <TextField defaultValue={praise.tone} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Tono" id="tone" name="tone"></TextField>
                 </Grid2>
             </Grid2>
             <Box marginTop={5}>
@@ -100,11 +115,11 @@ praise?<Container sx={{ padding: 1 }} onSubmit={formik.handleSubmit} component={
                 })}
             </Box>
             <Box marginTop={3}>
-                <Button variant="outlined" type="submit">Editar</Button>
+                <Button disabled={sendData} variant="outlined" type="submit">Editar</Button>
             </Box>
             <DialogCreateLetter open={openCreateDialog} setOpen={setOpenCreateDialog} createLetter={createLetter} />
             <DialogEditLetter open={openEditDialog} setOpen={setOpenEditDialog} editLetter={editLetter} letter={letterModify as LetterInterface} />
-        </Container>:null
+        </Container> : null
 
     );
 }

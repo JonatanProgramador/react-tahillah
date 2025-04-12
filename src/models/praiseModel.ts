@@ -11,16 +11,19 @@ class PraiseModel {
         return await PraiseService.getById(id) as PraiseInterface;
     }
 
-    static async createPraise(praise: PraiseInterface) {
-         await PraiseService.createPraise(JSON.stringify(praise));
+    static async createPraise(praise: PraiseInterface):Promise<boolean> {
+         const response = await PraiseService.createPraise(JSON.stringify(praise));
+         return response>200;
     }
 
-    static async updatePraise(praise: PraiseInterface) {
-        await PraiseService.updatePraise(JSON.stringify(praise), praise._id);
+    static async updatePraise(praise: PraiseInterface):Promise<boolean> {
+        const response = await PraiseService.updatePraise(JSON.stringify(praise), praise._id);
+        return response>200;
     }
 
     static async deletePraise(id: string) {
-        await PraiseService.deletePraise(id);
+        const response = await PraiseService.deletePraise(id);
+        return response>200;
     }
 
 }

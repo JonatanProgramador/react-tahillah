@@ -22,7 +22,7 @@ class PraiseService {
             body:input,
             headers:{"Content-Type":"application/json"}
          });
-         console.log(response);
+         return response.status;
     }
 
     static async updatePraise(input:string, id:string) {
@@ -31,12 +31,12 @@ class PraiseService {
             body:input,
             headers:{"Content-Type":"application/json"}
          });
-         console.log(response);
+         return response.status;
     }
 
     static async deletePraise(id:string) {
         const response = await fetch(this.url+id,{method:"DELETE"});
-         console.log(response);
+        return response.status;
     }
 
 }
