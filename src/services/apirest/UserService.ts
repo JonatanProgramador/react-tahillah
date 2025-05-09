@@ -3,7 +3,7 @@ import UserInterface from "../../interface/UserInterface";
 
 class UserService {
 
-    static readonly url = `http://${import.meta.env.VITE_HOST_SERVER}:${import.meta.env.VITE_PORT_SERVER}/`;
+    static readonly url = `${import.meta.env.VITE_URL_SERVER}/`;
 
     static async login(user:UserInterface) {
         const credentials = btoa(`${user.name}:${user.password}`);

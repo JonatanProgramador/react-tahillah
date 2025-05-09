@@ -1,7 +1,7 @@
 
 class PraiseService {
 
-    static readonly url = `http://${import.meta.env.VITE_HOST_SERVER}:${import.meta.env.VITE_PORT_SERVER}/praise/`;
+    static readonly url = `${import.meta.env.VITE_URL_SERVER}/praise/`;
 
     static async getAllPraises() {
     
