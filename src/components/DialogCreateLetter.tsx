@@ -15,7 +15,7 @@ const DialogCreateLetter: React.FC<props> = ({ open, setOpen, createLetter }) =>
     const valuesType = ["Estrofa", "Estribillo", "Pre-coro"];
 
     const formLetterSchema = Yup.object({
-        type: Yup.string().required("Requerido"),
+        type: Yup.string().required("Requerido").required("Requerido").oneOf(valuesType, "valor invalido"),
         letter: Yup.string().required("Requerido")
     });
 
@@ -35,7 +35,7 @@ const DialogCreateLetter: React.FC<props> = ({ open, setOpen, createLetter }) =>
                 <DialogTitle align="center">Creado letra</DialogTitle>
                 <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
                     <TextField helperText={formik.errors.letter} error={formik.errors.letter !== undefined} id="letter" name="letter" onChange={formik.handleChange} multiline rows={10} label="Letra" sx={{ width: '200px', backgroundColor: '#2C3E50', marginBottom: 1, marginTop: 1 }} color="secondary"></TextField>
-                    <CustomSelect id="type" label="Tipo" values={valuesType} disabled={false} defaultValue={undefined} value={formik.values.type??valuesType[0]} onChange={formik.handleChange} />
+                    <CustomSelect error={formik.errors.type !== undefined} helperText={formik.errors.type} id="type" label="Tipo" values={valuesType} disabled={false} defaultValue={undefined} value={formik.values.type??valuesType[0]} onChange={formik.handleChange} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancelar</Button>

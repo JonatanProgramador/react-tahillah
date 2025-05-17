@@ -12,13 +12,15 @@ interface props {
     letter: LetterInterface
 }
 
+ const valuesType = ["Estrofa", "Estribillo", "Pre-coro"];
+
 const DialogEditLetter: React.FC<props> = ({ open, setOpen, editLetter, letter }) => {
     const formLetterSchema = Yup.object({
-        type: Yup.string().required("Requerido"),
+        type: Yup.string().required("Requerido").oneOf(valuesType, "valor invalido"),
         letter: Yup.string().required("Requerido")
     });
 
-    const valuesType = ["Estrofa", "Estribillo", "Pre-coro"];
+   
 
     useEffect(() => { formik.setValues({ letter: letter?.letter, type: letter?.type }) }, [letter])
 
@@ -40,7 +42,7 @@ const DialogEditLetter: React.FC<props> = ({ open, setOpen, editLetter, letter }
                 <DialogTitle align="center">Editando letra</DialogTitle>
                 <DialogContent sx={{ display: "flex", flexDirection: "column", marginTop:1 }}>
                     <TextField defaultValue={letter?.letter} helperText={formik.errors.letter} error={formik.errors.letter !== undefined} id="letter" name="letter" onChange={formik.handleChange} multiline rows={10} label="Letra" sx={{ width: '200px', backgroundColor: '#2C3E50', marginBottom: 1, marginTop: 1 }} color="secondary"></TextField>
-                    <CustomSelect id="type" label="Tipo" values={valuesType} disabled={false} defaultValue={undefined} value={formik.values.type??valuesType[0]} onChange={formik.handleChange} />
+                    <CustomSelect error={formik.errors.type !== undefined} helperText={formik.errors.type} id="type" label="Tipo" values={valuesType} disabled={false} defaultValue={undefined} value={formik.values.type??valuesType[0]} onChange={formik.handleChange} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancelar</Button>
