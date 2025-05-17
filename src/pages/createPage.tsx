@@ -26,11 +26,11 @@ function CreatePage() {
     const navigate = useNavigate();
 
     const formPraiseSchema = Yup.object({
-        title: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
-        tone: Yup.string().max(20, "Maximo 20 caracteres"),
-        type: Yup.string().required("Campo requerido").max(20, "Maximo 20 caracteres"),
-        author: Yup.string().max(20, "Maximo 20 caracteres"),
-        track: Yup.string().max(20, "Maximo 20 caracteres"),
+        title: Yup.string().required("Campo requerido").max(40, "Maximo 40 caracteres"),
+        tone: Yup.string().max(40, "Maximo 40 caracteres"),
+        type: Yup.string().required("Campo requerido").oneOf(["Júbilo", "Adoración"], "valor invalido"),
+        author: Yup.string().max(40, "Maximo 40 caracteres"),
+        track: Yup.string().max(100, "Maximo 100 caracteres"),
     });
 
     const formik = useFormik({
@@ -83,22 +83,22 @@ function CreatePage() {
             {alert.show?<CustomAlert message={alert.message} type={alert.type as AlertColor}/>:null}
             <Grid2 spacing={1} container>
                 <Grid2 size={6}>
-                    <CustomSelect id="type" label="Tipo" values={["Júbilo", "Adoración"]} disabled={sendData} defaultValue={undefined} value={formik.values.type} onChange={formik.handleChange}/>
+                    <CustomSelect error={formik.errors.type !== undefined} helperText={formik.errors.type} id="type" label="Tipo" values={["Júbilo", "Adoración"]} disabled={sendData} defaultValue={undefined} value={formik.values.type} onChange={formik.handleChange}/>
                 </Grid2>
                 <Grid2 display={"flex"} justifyContent={"end"} size={6} >
-                    <TextField value={formik.values.title} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" label="Titulo" name="title" id="title"></TextField>
+                    <TextField slotProps={{input:{style:{backgroundColor:'#2C3E50'}}}} error={formik.errors.title !== undefined} helperText={formik.errors.title} value={formik.values.title} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px' }} color="secondary" label="Titulo" name="title" id="title"></TextField>
                 </Grid2>
                 <Grid2 size={6} display={"flex"}>
-                    <TextField disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" value={formik.values.author} label="Autor" id="author" name="author"></TextField>
+                    <TextField slotProps={{input:{style:{backgroundColor:'#2C3E50'}}}} error={formik.errors.author !== undefined} helperText={formik.errors.author} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px' }} color="secondary" value={formik.values.author} label="Autor" id="author" name="author"></TextField>
                 </Grid2>
                 <Grid2 size={6} display={"flex"} justifyContent={"end"} >
-                    <TextField disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" value={formik.values.tone} label="Tono" id="tone" name="tone"></TextField>
+                    <TextField slotProps={{input:{style:{backgroundColor:'#2C3E50'}}}} error={formik.errors.tone !== undefined} helperText={formik.errors.tone} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px'}}  color="secondary" value={formik.values.tone} label="Tono" id="tone" name="tone"></TextField>
                 </Grid2>
                 <Grid2 display={"flex"} flexDirection={"column"} justifyContent={"end"} size={6}>
                     <Button disabled={sendData} onClick={() => setOpenCreateDialog(true)} sx={{ width: 'fit-content', height: 'fit-content' }} variant="outlined">Crear Letra</Button>
                 </Grid2>
                 <Grid2 size={6} display={"flex"} justifyContent={"end"} >
-                    <TextField disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" value={formik.values.track} label="Original" id="track" name="track"></TextField>
+                    <TextField slotProps={{input:{style:{backgroundColor:'#2C3E50'}}}} error={formik.errors.track !== undefined} helperText={formik.errors.track} disabled={sendData} onChange={formik.handleChange} sx={{ width: '150px', backgroundColor: '#2C3E50' }} color="secondary" value={formik.values.track} label="Original" id="track" name="track"></TextField>
                 </Grid2>
             </Grid2>
             <Box marginTop={5}>
