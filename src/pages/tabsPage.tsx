@@ -7,11 +7,13 @@ import PraiseModel from "../models/praiseModel";
 import CustomAlert from "../components/CustomAlert";
 import UserService from "../services/apirest/UserService";
 import LoadingPage from "./LoadingPage";
+import DialogConfirm from "../components/DialogConfirm";
 
 function TabsPage() {
 
   const [value, setValue] = useState(1);
   const [praise, setPraise] = useState<PraiseInterface>();
+  const [dialogConfirm, setDialogConfirm] = useState(false);
   const [sendData, setSendData] = useState<boolean | null>(null);
   const [alert, setAlert] = useState({ type: "", message: "", show: false });
   const [isLogin, setIsLogin] = useState(false);
@@ -34,7 +36,7 @@ function TabsPage() {
   };
 
   function deletePraise() {
-    (async () => {
+     (async () => {
       setSendData(true);
       const response = await PraiseModel.deletePraise(id);
       setAlert({ type: response ? "success" : "error", message: response ? "Se ha eliminado la alabanza" : "Error al eliminar la alabanza", show: true });
@@ -54,8 +56,7 @@ function TabsPage() {
   }
 
   function touchMove(event: React.TouchEvent<HTMLDivElement>) {
- 
-    const speed = 1;
+
     const x = event.touches[0].clientX - position.start.x;
 
     if (position.end.x < event.touches[0].clientX) {
@@ -93,7 +94,7 @@ function TabsPage() {
   return (praise && isLogin !== null ? <Box sx={{ overflow: "hidden" }} >
     {alert.show ? <CustomAlert message={alert.message} type={alert.type as AlertColor} /> : null}
     {isLogin ? <Box padding={1} justifyContent={"center"} display={"flex"}>
-      <Button disabled={sendData || !isLogin} onClick={() => deletePraise()} sx={{ marginRight: 1 }} variant="contained">Eliminar</Button>
+      <Button disabled={sendData || !isLogin} onClick={() => setDialogConfirm(true)} sx={{ marginRight: 1 }} variant="contained">Eliminar</Button>
       <Button disabled={sendData || !isLogin} href={"/editPraise/" + id} variant="contained">Editar</Button>
     </Box> : null}
     <TabContext value={value}>
@@ -113,7 +114,7 @@ function TabsPage() {
         <Typography color="textSecondary" >{praise?.tone}</Typography>
       </Box>
     </Box>
-
+    <DialogConfirm confirm={deletePraise} open={dialogConfirm} setOpen={setDialogConfirm} description={`¿Desea eliminar la alabanza "${praise.title.toLocaleUpperCase()}"?`} title="Eliminar alabanza"/>
   </Box> : <LoadingPage />);
 
 
