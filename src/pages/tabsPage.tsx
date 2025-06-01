@@ -8,10 +8,10 @@ import CustomAlert from "../components/CustomAlert";
 import UserService from "../services/apirest/UserService";
 import LoadingPage from "./LoadingPage";
 import DialogConfirm from "../components/DialogConfirm";
+import ShowPraise from "../components/ShowPraise";
 
 function TabsPage() {
 
-  const [value, setValue] = useState(1);
   const [praise, setPraise] = useState<PraiseInterface>();
   const [dialogConfirm, setDialogConfirm] = useState(false);
   const [sendData, setSendData] = useState<boolean | null>(null);
@@ -30,13 +30,9 @@ function TabsPage() {
   }, []);
 
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    event.isTrusted;
-    setValue(newValue);
-  };
 
   function deletePraise() {
-     (async () => {
+    (async () => {
       setSendData(true);
       const response = await PraiseModel.deletePraise(id);
       setAlert({ type: response ? "success" : "error", message: response ? "Se ha eliminado la alabanza" : "Error al eliminar la alabanza", show: true });
@@ -49,47 +45,7 @@ function TabsPage() {
     })()
   }
 
-  const [position, setPosition] = useState({ start: { x: 0, y: 0 }, end: { x: 0, y: 0 } });
 
-  function touchStart(event: React.TouchEvent<HTMLDivElement>) {
-    setPosition({ start: { x: event.touches[0].clientX, y: event.touches[0].clientY }, end: { x: 0, y: 0 } })
-  }
-
-  function touchMove(event: React.TouchEvent<HTMLDivElement>) {
-
-    const x = event.touches[0].clientX - position.start.x;
-
-    if (position.end.x < event.touches[0].clientX) {
-      event.currentTarget.style.transform = "translateX(" + (x) + "px)";
-    } else {
-      event.currentTarget.style.transform = "translateX(" + (x) + "px)";
-    }
- 
-    setPosition({ start: position.start, end: { x: event.touches[0].clientX, y: event.touches[0].clientY } })
-  }
-
-  function touchEnd(event: React.TouchEvent<HTMLDivElement>) {
-
-    const trige = 50;
-
- 
-    if (position.end.x > 0) {
-      event.currentTarget.style.transform = "translateX(" + 0 + "px)"
-      if ((position.end.x - position.start.x) > trige) {
-        if (praise) {
-          setValue(value > 1 ? value - 1 : value);
-        }
-      }
-
-
-      if ((position.start.x - position.end.x) > trige) {
-        if (praise) {
-          setValue(praise?.letters.length > value ? value + 1 : value);
-        }
-      }
-    }
-
-  }
 
   return (praise && isLogin !== null ? <Box sx={{ overflow: "hidden" }} >
     {alert.show ? <CustomAlert message={alert.message} type={alert.type as AlertColor} /> : null}
@@ -97,24 +53,8 @@ function TabsPage() {
       <Button disabled={sendData || !isLogin} onClick={() => setDialogConfirm(true)} sx={{ marginRight: 1 }} variant="contained">Eliminar</Button>
       <Button disabled={sendData || !isLogin} href={"/editPraise/" + id} variant="contained">Editar</Button>
     </Box> : null}
-    <TabContext value={value}>
-      {praise?.letters.map((letter) => { return <TabPanel onTouchEnd={(event) => touchEnd(event)} onTouchMove={(event) => touchMove(event)} onTouchStart={(event) => touchStart(event)} sx={{ fontSize: 20, textAlign: "center", minHeight: "60vh" }} key={letter.id} value={letter.id}>{letter.letter}</TabPanel> })}
-      <Tabs variant='scrollable' scrollButtons="auto" value={value} onChange={handleChange}>
-        {praise?.letters.map((letter) => { return (<Tab key={letter.id} label={letter.summary} value={letter.id} />); })}
-      </Tabs>
-    </TabContext>
-
-    <Box display="flex" margin={1}>
-      <Box sx={{ flexGrow: 1, }} display={"flex"} flexDirection={"column"}>
-        <Typography fontSize={20}>Titulo</Typography>
-        <Typography color="textSecondary" >{praise?.title}</Typography>
-      </Box>
-      <Box>
-        <Typography fontSize={20}>Tono</Typography>
-        <Typography color="textSecondary" >{praise?.tone}</Typography>
-      </Box>
-    </Box>
-    <DialogConfirm confirm={deletePraise} open={dialogConfirm} setOpen={setDialogConfirm} description={`¿Desea eliminar la alabanza "${praise.title.toLocaleUpperCase()}"?`} title="Eliminar alabanza"/>
+    <ShowPraise praise={praise} />
+    <DialogConfirm confirm={deletePraise} open={dialogConfirm} setOpen={setDialogConfirm} description={`¿Desea eliminar la alabanza "${praise.title.toLocaleUpperCase()}"?`} title="Eliminar alabanza" />
   </Box> : <LoadingPage />);
 
 
