@@ -10,16 +10,16 @@ interface AppRoute {
     menuBar: boolean;
     guard: boolean;
     element: LazyExoticComponent<() => JSX.Element>;
-  }
+}
 
-const ROUTES:AppRoute[] = [
+const ROUTES: AppRoute[] = [
     {
         id: 1,
         name: "Home",
         url: "/",
         path: "/",
-        menuBar:true,
-        guard:false,
+        menuBar: true,
+        guard: false,
         element: lazy(() => import('../pages/ListThemePage'))
     },
     {
@@ -27,44 +27,44 @@ const ROUTES:AppRoute[] = [
         name: "Lista",
         url: "",
         path: "/praises/:type",
-        menuBar:false,
-        guard:false,
+        menuBar: false,
+        guard: false,
         element: lazy(() => import('../pages/ListPraise'))
     },
     {
         id: 3,
         name: "Ver alabanza",
         url: "",
-        menuBar:false,
+        menuBar: false,
         path: "/showPraise/:id",
-        guard:false,
+        guard: false,
         element: lazy(() => import('../pages/tabsPage'))
     },
     {
         id: 4,
         name: "Crear",
         url: "",
-        menuBar:false,
+        menuBar: false,
         path: "/createPraise",
-        guard:true,
+        guard: true,
         element: lazy(() => import('../pages/createPage'))
     },
     {
         id: 5,
         name: "Editar",
         url: "",
-        menuBar:false,
+        menuBar: false,
         path: "/editPraise/:id",
-        guard:true,
+        guard: true,
         element: lazy(() => import('../pages/editPage'))
     },
     {
         id: 6,
         name: "Login",
         url: "/login",
-        menuBar:true,
+        menuBar: true,
         path: "/login",
-        guard:false,
+        guard: false,
         element: lazy(() => import('../pages/loginPage'))
     },
 
@@ -72,10 +72,19 @@ const ROUTES:AppRoute[] = [
         id: 7,
         name: "Buscar",
         url: "/searchPraise",
-        menuBar:true,
+        menuBar: true,
         path: "/searchPraise",
-        guard:false,
+        guard: false,
         element: lazy(() => import('../pages/SearchPage'))
+    },
+    {
+        id: 8,
+        name: "Sesión",
+        url: "/sesion",
+        menuBar: true,
+        path: "/sesion",
+        guard: false,
+        element: lazy(() => import('../pages/SesionPage'))
     }
 ];
 
