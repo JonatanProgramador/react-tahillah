@@ -31,7 +31,7 @@ const PraiseSearch: React.FC<props> = ({setPraises, sending, setSending }) => {
     });
 
     return (
-            <Box component={"form"} onSubmit={formik.handleSubmit}>
+            <Box marginBottom={1} component={"form"} onSubmit={formik.handleSubmit}>
                 <TextField size="small" disabled={sending} onChange={formik.handleChange} slotProps={{ inputLabel: { style: { color: "white" } } }} sx={{ width: '150px', backgroundColor: '#2C3E50', marginRight: 1 }} color="secondary" label="Titulo" name="title" id="title" />
                 <Button disabled={sending} type="submit" variant="contained">Buscar</Button>
             </Box>);
