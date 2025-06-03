@@ -2,6 +2,7 @@ import { Box, Button, Card, CardActionArea, CardContent, Typography } from "@mui
 import { useEffect, useState } from "react";
 import UserService from "../services/apirest/UserService";
 import LoadingPage from "./LoadingPage";
+import TypePraise from "../components/TypePraise";
 
 
 const ListThemePage = () => {
@@ -18,22 +19,7 @@ const ListThemePage = () => {
         isLogin !== null?
         <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
             {isLogin?<Button sx={{ marginBottom: 5 }} disabled={!isLogin} href="/createPraise" variant="contained">Crear</Button>:null}
-            
-            <Card sx={{ width: 120, marginBottom: 1 }}>
-                <CardActionArea  href="praises/jubilo">
-                    <CardContent>
-                        <Typography textAlign={"center"} component={"h4"}>Júbilo</Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-
-            <Card sx={{ width: 120, marginBottom: 1 }}>
-                <CardActionArea  href="praises/adoracion">
-                    <CardContent>
-                        <Typography textAlign={"center"} component={"h4"}>Adoración</Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+            <TypePraise/>
         </Box>:<LoadingPage/>
     );
 }
