@@ -23,15 +23,6 @@ const ROUTES: AppRoute[] = [
         element: lazy(() => import('../pages/ListThemePage'))
     },
     {
-        id: 2,
-        name: "Lista",
-        url: "",
-        path: "/praises/:type",
-        menuBar: false,
-        guard: false,
-        element: lazy(() => import('../pages/ListPraise'))
-    },
-    {
         id: 3,
         name: "Ver alabanza",
         url: "",

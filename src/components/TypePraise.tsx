@@ -11,10 +11,14 @@ const types = [
     },
 ];
 
-export default function TypePraise() {
+interface props {
+    setType: (value:string) => void
+};
+
+const TypePraise: React.FC<props> = ({setType}) => {
     return (<Box>
         {types.map((value, index) => <Card key={index} sx={{ width: 120, marginBottom: 1 }}>
-            <CardActionArea href={`praises/${value.url}`}>
+            <CardActionArea onClick={()=>{setType(value.url)}}>
                 <CardContent>
                     <Typography textAlign={"center"} component={"h4"}>{value.name}</Typography>
                 </CardContent>
@@ -22,3 +26,5 @@ export default function TypePraise() {
         </Card>)}
     </Box>);
 }
+
+export default TypePraise;
