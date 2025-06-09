@@ -20,7 +20,7 @@ const SearchPage = () => {
             {sending ? <LoadingPage /> :
                 <Box marginTop={1} display={'flex'} flexDirection={"column"} alignItems={'center'} >
                     {praises?.map((praise) => {
-                        return <CardPraise key={praise._id} praise={praise} />
+                        return <CardPraise mode="show" key={praise._id} praise={praise} />
                     })}
                 </Box>}
         </Box>
