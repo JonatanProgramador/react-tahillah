@@ -3,13 +3,14 @@ import PraiseInterface from "../interface/PraiseInterface";
 
 
 interface props {
-    praise: PraiseInterface
+    praise: PraiseInterface,
+    mode: string
 };
 
-const CardPraise: React.FC<props> = ({ praise }) => {
+const CardPraise: React.FC<props> = ({ praise, mode }) => {
     return (
         <Card sx={{ width: 200, marginBottom: 1 }}>
-            <CardActionArea href={"/showPraise/" + praise._id}>
+            <CardActionArea  href={mode==="show"?"/showPraise/" + praise._id:""}>
                 <CardContent>
                     <Typography color="primary" component={"h4"}>Titulo</Typography>
                     <Typography component={"h4"}>{praise.title}</Typography>

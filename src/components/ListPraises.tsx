@@ -4,10 +4,11 @@ import CardPraise from "./CardPraise";
 import PraiseModel from "../models/praiseModel";
 
 interface props {
-    type: string
+    type: string,
+    mode: string
 };
 
-const ListPraises: React.FC<props> = ({ type }) => {
+const ListPraises: React.FC<props> = ({ type, mode }) => {
 
     const [praises, setPraises] = useState<PraiseInterface[]>();
 
@@ -18,7 +19,7 @@ const ListPraises: React.FC<props> = ({ type }) => {
     }, []);
 
     return (praises?.map((praise) => {
-        return <CardPraise key={praise._id} praise={praise} />
+        return <CardPraise mode={mode} key={praise._id} praise={praise} />
     }));
 }
 

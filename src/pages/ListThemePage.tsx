@@ -21,7 +21,7 @@ const ListThemePage = () => {
         isLogin !== null?
         <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
             {isLogin?<Button sx={{ marginBottom: 5 }} disabled={!isLogin} href="/createPraise" variant="contained">Crear</Button>:null}
-            {typePraises===""?<TypePraise setType={setTypePraises}/>:<ListPraises type={typePraises}/>}
+            {typePraises===""?<TypePraise setType={setTypePraises}/>:<ListPraises type={typePraises} mode="show"/>}
         </Box>:<LoadingPage/>
     );
 }

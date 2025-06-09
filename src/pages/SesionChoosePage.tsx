@@ -15,7 +15,7 @@ export default function SesionChoosePage() {
     return(
         <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
             <PraiseSearch sending={sending} setPraises={setPraises} setSending={setSending}/>
-            {typePraise===""?<TypePraise setType={setTypePraise}/>:<ListPraises type={typePraise}/>}
+            {typePraise===""?<TypePraise setType={setTypePraise}/>:<ListPraises mode="choose" type={typePraise}/>}
         </Box>
     );
 }
