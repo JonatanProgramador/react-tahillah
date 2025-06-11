@@ -13,10 +13,12 @@ const ListPraises: React.FC<props> = ({ type, mode }) => {
     const [praises, setPraises] = useState<PraiseInterface[]>();
 
     useEffect(() => {
-        (async () => {
-            setPraises(await PraiseModel.searchPraise("type", type === "jubilo" ? "Júbilo" : "Adoración", true));
-        })()
-    }, []);
+        if (type !== "") {
+            (async () => {
+                setPraises(await PraiseModel.searchPraise("type", type === "jubilo" ? "Júbilo" : "Adoración", true));
+            })()
+        }
+    }, [type]);
 
     return (praises?.map((praise) => {
         return <CardPraise mode={mode} key={praise._id} praise={praise} />

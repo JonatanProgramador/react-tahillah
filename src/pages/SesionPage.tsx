@@ -4,6 +4,7 @@ import PraiseInterface from "../interface/PraiseInterface";
 import ShowPraise from "../components/ShowPraise";
 import SesionChoosePage from "./SesionChoosePage";
 import { chooseContext } from "../contexts/ChoosePraiseContext";
+import PraiseModel from "../models/praiseModel";
 
 const isAdmin = true; //lo tiene que comprobar el server.
 
@@ -14,24 +15,30 @@ const SesionPage = () => {
 
     const context = useContext(chooseContext);
 
-    useEffect(()=>{
-        console.log(context?.choosedPraise);
-    },[context?.choosedPraise])
+    useEffect(() => {
+        if (context && context.choosedPraise !== "") {
+            (async () => {
+                setPraise(await PraiseModel.getPraise(context.choosedPraise));
+                setIsChoose(false);
+            })()
+        }
+
+    }, [context?.choosedPraise])
 
     return (
-        !isChoose?
-        <Box>
-            {isAdmin?<Box display={"flex"} justifyContent={"center"}>
-                <Button sx={{ marginRight: 1 }} variant="contained">URL</Button>
-                <Button onClick={()=>setIsChoose(!isChoose)} sx={{ marginRight: 1 }} variant="contained">Elegir</Button>
-            </Box>:<div />}
+        !isChoose ?
+            <Box>
+                {isAdmin ? <Box display={"flex"} justifyContent={"center"}>
+                    <Button sx={{ marginRight: 1 }} variant="contained">URL</Button>
+                    <Button onClick={() => setIsChoose(!isChoose)} sx={{ marginRight: 1 }} variant="contained">Elegir</Button>
+                </Box> : <div />}
 
-            {praise?<ShowPraise praise={praise}/>:<div/>}
-            
-        </Box>:
-        <Box>
-        <SesionChoosePage/>
-        </Box>
+                {praise ? <ShowPraise praise={praise} /> : <div />}
+
+            </Box> :
+            <Box>
+                <SesionChoosePage />
+            </Box>
     );
 }
 
