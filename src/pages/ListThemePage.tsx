@@ -13,7 +13,7 @@ const ListThemePage = () => {
 
     useEffect(() => {
         (async () => {
-            setIsLogin(await UserService.isLogin());
+            setIsLogin(await UserService.isLogin() >= 1);
         })()
     }, []);
 

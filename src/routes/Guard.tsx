@@ -3,8 +3,12 @@ import UserService from "../services/apirest/UserService";
 import { Navigate, Outlet } from "react-router-dom";
 
 
-export default function Guard() {
-    const [isLogin, setIsLogin] = useState<boolean|null>(null);
+interface props {
+    securityLevel: number,
+};
+
+const Guard:React.FC<props> = ({securityLevel}) => {
+    const [isLogin, setIsLogin] = useState<number|null>(null);
 
     useEffect(()=>{
         (async ()=>{
@@ -14,7 +18,9 @@ export default function Guard() {
     if(isLogin === null) {
         return <div></div>
     } else {
-        return isLogin ? <Outlet /> : <Navigate to="/login" />
+        return isLogin >= securityLevel ? <Outlet /> : <Navigate to="/login" />
     }
     
 }
+
+export default Guard;

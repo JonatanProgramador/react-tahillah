@@ -19,7 +19,7 @@ class UserService {
         const response = await fetch(this.url+"isLogin",{
             credentials:'include'
          });
-         return await response.text() === "true";
+         return Number.parseInt(await response.text());
     }
 
     static async logout() {

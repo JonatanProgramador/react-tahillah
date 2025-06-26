@@ -12,11 +12,7 @@ export default function Router() {
     <Suspense fallback={<LoadingPage/>}>
         <Routes>
             {ROUTES.map((route)=>{
-                if(route.guard) {
-                    return <Route  key={route.id} path={route.path}  element={<Guard/>}><Route path="" element={<route.element/>}/></Route>;
-                } else {
-                    return <Route  key={route.id} path={route.path} element={<route.element/>}></Route>;
-                }
+                    return <Route  key={route.id} path={route.path}  element={<Guard securityLevel={route.securityLevel}/>}><Route path="" element={<route.element/>}/></Route>;
             })}
         </Routes>
         </Suspense>

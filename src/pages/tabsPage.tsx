@@ -25,7 +25,7 @@ function TabsPage() {
   useEffect(() => {
     (async () => {
       setPraise(await PraiseModel.getPraise(id));
-      setIsLogin(await UserService.isLogin())
+      setIsLogin(await UserService.isLogin() >= 1)
     })()
   }, []);
 

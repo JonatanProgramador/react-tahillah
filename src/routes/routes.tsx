@@ -8,7 +8,7 @@ interface AppRoute {
     path: string;
     url: string;
     menuBar: boolean;
-    guard: boolean;
+    securityLevel: number;
     element: LazyExoticComponent<() => JSX.Element>;
 }
 
@@ -19,7 +19,7 @@ const ROUTES: AppRoute[] = [
         url: "/",
         path: "/",
         menuBar: true,
-        guard: false,
+        securityLevel: 0,
         element: lazy(() => import('../pages/ListThemePage'))
     },
     {
@@ -28,7 +28,7 @@ const ROUTES: AppRoute[] = [
         url: "",
         menuBar: false,
         path: "/showPraise/:id",
-        guard: false,
+        securityLevel: 0,
         element: lazy(() => import('../pages/tabsPage'))
     },
     {
@@ -37,7 +37,7 @@ const ROUTES: AppRoute[] = [
         url: "",
         menuBar: false,
         path: "/createPraise",
-        guard: true,
+        securityLevel: 1,
         element: lazy(() => import('../pages/createPage'))
     },
     {
@@ -46,7 +46,7 @@ const ROUTES: AppRoute[] = [
         url: "",
         menuBar: false,
         path: "/editPraise/:id",
-        guard: true,
+        securityLevel: 1,
         element: lazy(() => import('../pages/editPage'))
     },
     {
@@ -55,7 +55,7 @@ const ROUTES: AppRoute[] = [
         url: "/login",
         menuBar: true,
         path: "/login",
-        guard: false,
+        securityLevel: 0,
         element: lazy(() => import('../pages/loginPage'))
     },
 
@@ -65,7 +65,7 @@ const ROUTES: AppRoute[] = [
         url: "/searchPraise",
         menuBar: true,
         path: "/searchPraise",
-        guard: false,
+        securityLevel: 0,
         element: lazy(() => import('../pages/SearchPage'))
     },
     {
@@ -74,7 +74,7 @@ const ROUTES: AppRoute[] = [
         url: "/sesion",
         menuBar: true,
         path: "/sesion",
-        guard: false,
+        securityLevel: 2,
         element: lazy(() => import('../pages/SesionPage'))
     }
 ];
