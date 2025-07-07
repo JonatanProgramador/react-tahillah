@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import UserService from "../services/apirest/UserService";
 import { Navigate, Outlet } from "react-router-dom";
+import { userSecurityLevelContext } from "../contexts/UserSecurityLevel";
 
 
 interface props {
@@ -8,17 +9,15 @@ interface props {
 };
 
 const Guard:React.FC<props> = ({securityLevel}) => {
-    const [isLogin, setIsLogin] = useState<number|null>(null);
+   const { userSecurityLevel, setUserSecurityLevel } = useContext(userSecurityLevelContext);
 
     useEffect(()=>{
-        (async ()=>{
-            setIsLogin(await UserService.isLogin());
-        })()
+       setUserSecurityLevel();
     },[])
-    if(isLogin === null) {
+    if(userSecurityLevel === -1) {
         return <div></div>
     } else {
-        return isLogin >= securityLevel ? <Outlet /> : <Navigate to="/login" />
+        return userSecurityLevel >= securityLevel ? <Outlet /> : <Navigate to="/login" />
     }
     
 }
