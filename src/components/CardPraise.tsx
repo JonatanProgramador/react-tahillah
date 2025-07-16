@@ -12,14 +12,14 @@ interface props {
 
 const CardPraise: React.FC<props> = ({ praise, mode }) => {
 
-    const context = useContext(chooseContext);
+    const {setChosePraise} = useContext(chooseContext);
     const navigate = useNavigate();
 
     function setPraiseId() {
         mode === "show" ?
             navigate("/showPraise/" + praise._id)
             :
-            context?.setChosePraise(praise._id)
+            setChosePraise(praise._id)
             ;
     }
 

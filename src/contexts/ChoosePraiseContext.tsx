@@ -11,7 +11,10 @@ interface ThemeContextType {
   setChosePraise: (value:string) => void;
 }
 
-export const chooseContext = createContext<ThemeContextType | undefined>(undefined);
+export const chooseContext = createContext<ThemeContextType>({
+  choosedPraise:"",
+  setChosePraise: ()=>{}
+});
 
 export const ChoosePraiseConstext:React.FC<props> = ({children}) => {
 
