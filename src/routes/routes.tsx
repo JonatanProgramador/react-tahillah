@@ -76,6 +76,15 @@ const ROUTES: AppRoute[] = [
         path: "/sesion",
         securityLevel: 2,
         element: lazy(() => import('../pages/SesionPage'))
+    },
+     {
+        id: 9,
+        name: "Sesión",
+        url: "",
+        menuBar: false,
+        path: "/sesion/:id",
+        securityLevel: 0,
+        element: lazy(() => import('../pages/SesionPage'))
     }
 ];
 

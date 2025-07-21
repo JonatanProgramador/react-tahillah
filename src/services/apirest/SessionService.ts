@@ -31,6 +31,12 @@ class SessionService {
          });
          return response.status;
     }
+
+    static async getById(id:string) {
+        const response = await fetch(this.url+id);
+        const session = await response.json();
+        return session;
+    }
 }
 
 export default SessionService;
