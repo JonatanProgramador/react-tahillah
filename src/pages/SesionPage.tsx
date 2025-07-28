@@ -13,6 +13,7 @@ import SessionInterface from "../interface/SessionInterface";
 import { WhatsappShareButton } from "react-share";
 import { ContentCopy, WhatsApp } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
+import useSessionListerner from "../hooks/UseSessionListener";
 
 
 const SesionPage = () => {
@@ -26,21 +27,30 @@ const SesionPage = () => {
 
     const { choosedPraise } = useContext(chooseContext);
     const { userSecurityLevel } = useContext(userSecurityLevelContext);
+    const { on, disconnect } = useSessionListerner();
 
     useEffect(() => {
+    
         async function getSessionLeader() {
             let session;
             if (params.id === undefined) {
                 session = await SessionModel.getSessionByUser();
             } else {
                 session = await SessionModel.getSession(params.id);
+                on(session._id, setPraise);
             }
             if (session) {
                 setPraise(await PraiseService.getById(session.idPraise));
                 setSessionId(session._id);
             }
         }
-            getSessionLeader();
+
+        getSessionLeader();
+
+
+        return () => {
+            disconnect();
+        };
 
     }, [])
 
@@ -63,13 +73,13 @@ const SesionPage = () => {
         !isChoose ?
             <Box>
                 {userSecurityLevel > 2 && params.id === undefined ? <Box display={"flex"} justifyContent={"center"}>
-                    <Button onClick={(event) => { setAnchorEl(event.currentTarget) }} sx={{ marginRight: 1 }} variant="contained">Compartir</Button>
+                    <Button disabled={praise === undefined} onClick={(event) => { setAnchorEl(event.currentTarget) }} sx={{ marginRight: 1 }} variant="contained">Compartir</Button>
                     <Button onClick={() => setIsChoose(!isChoose)} sx={{ marginRight: 1 }} variant="contained">Elegir</Button>
                     <Menu
                         open={anchorEl !== null}
                         anchorEl={anchorEl}
                         onClose={() => { setAnchorEl(null) }}>
-                        <WhatsappShareButton url={window.location.href+"/"+sessionId}>
+                        <WhatsappShareButton url={window.location.href + "/" + sessionId}>
                             <MenuItem>
                                 <ListItemIcon>
                                     <WhatsApp color="primary" />
@@ -80,7 +90,7 @@ const SesionPage = () => {
                             </MenuItem>
                         </WhatsappShareButton>
 
-                        <MenuItem onClick={()=>{navigator.clipboard.writeText(window.location.href+"/"+sessionId)}}>
+                        <MenuItem onClick={() => { navigator.clipboard.writeText(window.location.href + "/" + sessionId) }}>
                             <ListItemIcon>
                                 <ContentCopy color="primary" />
                             </ListItemIcon>
